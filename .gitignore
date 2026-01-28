@@ -1,0 +1,14 @@
+# Binarios
+*.dll
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.ipch
+
+# Visual Studio
+.vs/
+x64/
+Debug/
+Release/
