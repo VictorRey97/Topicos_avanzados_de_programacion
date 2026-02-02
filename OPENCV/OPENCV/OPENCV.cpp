@@ -4,25 +4,31 @@
 using namespace cv;
 using namespace std;
 
-int main()
-{
-    Mat img = imread("../img/logo.png");  // ojo con la ruta
-    if (img.empty()) {
-        cout << "No se pudo cargar la imagen" << endl;
+int main() {
+    VideoCapture cap(0, CAP_DSHOW); // Windows: CAP_DSHOW suele funcionar mejor
+    if (!cap.isOpened()) {
+        cout << "No se pudo abrir la camara" << endl;
         return -1;
     }
 
-    // Convertir a escala de grises
-    Mat img_gray;
-    cvtColor(img, img_gray, COLOR_BGR2GRAY);
+    Mat frame, frame_gray;
 
-    // Redimensionar
-    Mat img_resized;
-    resize(img_gray, img_resized, Size(636, 316));
+    cout << "Presiona ESC para salir..." << endl;
 
-    imshow("Imagen Original", img);
-    imshow("Imagen en escala de grises", img_resized);
-    waitKey(0);
+    while (true) {
+        bool ok = cap.read(frame);
+        if (!ok || frame.empty()) continue;
 
+        cvtColor(frame, frame_gray, COLOR_BGR2GRAY);
+
+        imshow("Camara - Color", frame);
+        imshow("Camara - Gris", frame_gray);
+
+        int key = waitKey(30);
+        if (key == 27) break; // ESC
+    }
+
+    cap.release();
+    destroyAllWindows();
     return 0;
 }
